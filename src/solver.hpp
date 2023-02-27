@@ -3,6 +3,6 @@
 
 #include<string>
 
-std::string solve_all();
+std::string solver();
 
 #endif

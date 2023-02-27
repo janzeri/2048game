@@ -6,28 +6,28 @@
 #include<ctime>
 #include<iomanip>
 #include<unistd.h>
-
 #include <stack>
 #include <vector>
 
 #include "solver.hpp"
 
-#define RATIO 7 //2の生成率
+#define RATIO 6 //2の生成率
+#define NUM_OF_DATA 30
 
 using namespace std;
 
-bool debug = false;
+bool collect = false;
 vector<vector<int> > board(4, vector<int>(4, 0));
-vector<vector<int> > board_copy(4, vector<int>(4, 0));
 int add = 0;
+int score;
 
 class game{
-	stack<vector<vector<int> > > board_stack;
 	stack<int> score_stack;
 
 	public:
     void menu();
 	static vector<vector<int> > get_board();
+	static int get_add();
 	static bool can_up(vector<vector<int> > &board);
 	static bool can_down(vector<vector<int> > &board);
 	static bool can_left(vector<vector<int> > &board);
@@ -36,9 +36,9 @@ class game{
 	static void down(vector<vector<int> > &board);
 	static void left(vector<vector<int> > &board);
 	static void right(vector<vector<int> > &board);
+	static void generate_num(vector<vector<int> > &board);
 
 	private:
-	int score;
 	string mode;
 	void draw_board();
 	void out_num(int y);
@@ -79,6 +79,10 @@ vector<vector<int> > game::get_board(){
 	return board;
 }
 
+int game::get_add(){
+	return add;
+}
+
 void game::draw_board(){
 	cout << "\t\t\t\t+------+------+------+------+" << endl;
 	cout << "\t\t\t\t|      |      |      |      |" << endl;
@@ -111,12 +115,11 @@ void game::out_num(int y){
 	}
 }
 
-void game::generate_num(){
+void game::generate_num(vector<vector<int> > &board){
 	int y = rand() % 4;
 	int x = rand() % 4;
-	if(debug)cout << x << " " << y << endl;
 	if(board[y][x] != 0){
-		generate_num();
+		generate_num(board);
 	} else {
 		int n = rand() % 10;
 		if(n <= RATIO){
@@ -139,8 +142,8 @@ bool game::board_notfull(){
 void game::normal_play(){
 	while(board_notfull()){
 		cout << endl << endl << "\t\t\t\t    -----Normal play-----" << endl << endl;
-		cout << "score : " << score << endl;
-		generate_num();
+		cout << "\t\tscore : " << score << endl;
+		generate_num(board);
 		draw_board();
 		if(!can_up(board) && !can_down(board) && !can_left(board) && !can_right(board))break;
 		cout << endl << "\t\t\tW\t   ^" << endl << endl;
@@ -153,27 +156,48 @@ void game::normal_play(){
 
 void game::auto_play(){
 	string ans;
+	score = 0;
 	while(board_notfull()){
-		cout << endl << endl << "\t\t\t\t     -----Auto play-----" << endl << endl;
-		cout << "score : " << score << endl;
-		generate_num();
-		draw_board();
+		generate_num(board);
+		if(!collect){
+			cout << endl << endl << "\t\t\t\t     -----Auto play-----" << endl << endl;
+			cout << "\t\tscore : " << score << endl;
+			draw_board();
+		}
 		if(!can_up(board) && !can_down(board) && !can_left(board) && can_right(board))break;
-		ans = solve_all();
+		ans = solver();
 		if(ans == "w")up(board);
 		else if(ans == "d")right(board);
 		else if(ans == "s")down(board);
 		else if(ans == "a")left(board);
-		else cout << "??" << endl;
-		cout << "\t\t\t\t\tInput : " << ans << endl;
-		//usleep(500000);
+		if(!collect)cout << "\t\t\t\t\tInput : " << ans << endl;
+		if(!collect)usleep(500000);
 		score += add;
 	}
+	if(collect)draw_board();
 	end_game();
 }
 
 void game::collect_data(){
-
+	int sum = 0;
+	collect = true;
+	for(int i = 0; i < NUM_OF_DATA; i++){
+		auto_play();
+		sum += score;
+		score_stack.push(score);
+		for(int j = 0; j < 4; j++){
+			for(int k = 0; k < 4; k++){
+				board[j][k] = 0;
+			}
+		}
+	}
+	cout << endl << "\t\t";
+	for(int i = 1; i < NUM_OF_DATA+1; i++){
+		cout << score_stack.top() << "  ";
+		score_stack.pop();
+		if(i%10 == 0)cout << endl << "\t\t";
+	}
+	cout << endl << "\t\tavarage score is " << sum/NUM_OF_DATA << endl;
 }
 
 void game::move(){
