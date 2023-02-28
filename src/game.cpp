@@ -232,7 +232,7 @@ void game::move(){
 			move();
 		}
 	} else if(strcasecmp(d.c_str(), "H") == 0){
-		cout << "\t\t\t\t\tRecommend : " << solver() << endl << "\t\t\t\t\tInput : ";
+		cout << "\t\t\t\t\tHint : " << solver() << endl << "\t\t\t\t\tInput : ";
 		move();
 	} else if(strcasecmp(d.c_str(), "Q") == 0){
 		cout << endl << "\t\t\t\t----------------------------" << endl;
