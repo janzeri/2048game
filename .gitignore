@@ -1,5 +1,6 @@
 .DS_Store
 /**/.DS_Store
+/src/2048
 # Prerequisites
 *.d
 
