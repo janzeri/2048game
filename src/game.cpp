@@ -232,10 +232,8 @@ void game::move(){
 			move();
 		}
 	} else if(strcasecmp(d.c_str(), "H") == 0){
-		/*
-		
-		
-		*/
+		cout << "\t\t\t\t\tRecommend : " << solver() << endl << "\t\t\t\t\tInput : ";
+		move();
 	} else if(strcasecmp(d.c_str(), "Q") == 0){
 		cout << endl << "\t\t\t\t----------------------------" << endl;
 		cout << "\t\t\t\t----------- Quit -----------" << endl;
@@ -264,18 +262,20 @@ bool game::can_up(vector<vector<int> > &board){
 
 void game::up(vector<vector<int> > &board){
 	add = 0;
-	for(int i = 1; i < 4; i++){
-		for(int j = 0; j < 4; j++){
+	for(int j = 0; j < 4; j++){
+		bool merge_flag = false;
+		for(int i = 1; i < 4; i++){
 			int y = -1;
 			if(board[i][j] == 0)continue;
-			bool merge_flag = false;
 			for(int k = i-1; k >= 0; k--){
 				if(board[k][j] == 0)y = k;
 				else if(board[i][j] == board[k][j]){
 					y = k;
-					merge_flag = true;
+					if(!merge_flag)merge_flag = true;
+					else merge_flag = false;
 					break;
 				} else {
+					merge_flag = false;
 					break;
 				}
 			}
@@ -309,18 +309,20 @@ bool game::can_down(vector<vector<int> > &board){
 
 void game::down(vector<vector<int> > &board){
 	add = 0;
-	for(int i = 3; i >= 0; i--){
-		for(int j = 0; j < 4; j++){
+	for(int j = 0; j < 4; j++){
+		bool merge_flag = false;
+		for(int i = 3; i >= 0; i--){
 			int y = -1;
 			if(board[i][j] == 0)continue;
-			bool merge_flag = false;
 			for(int k = i+1; k < 4; k++){
 				if(board[k][j] == 0)y = k;
 				else if(board[i][j] == board[k][j]){
 					y = k;
-					merge_flag = true;
+					if(!merge_flag)merge_flag = true;
+					else merge_flag = false;
 					break;
 				} else {
+					merge_flag = false;
 					break;
 				}
 			}
@@ -354,18 +356,20 @@ bool game::can_left(vector<vector<int> > &board){
 
 void game::left(vector<vector<int> > &board){
 	add = 0;
-	for(int j = 1; j < 4; j++){
-		for(int i = 0; i < 4; i++){
+	for(int i = 0; i < 4; i++){
+		bool merge_flag = false;
+		for(int j = 1; j < 4; j++){
 			int x = -1;
 			if(board[i][j] == 0)continue;
-			bool merge_flag = false;
 			for(int k = j-1; k >= 0; k--){
 				if(board[i][k] == 0)x = k;
 				else if(board[i][j] == board[i][k]){
 					x = k;
-					merge_flag = true;
+					if(!merge_flag)merge_flag = true;
+					else merge_flag = false;
 					break;
 				} else {
+					merge_flag = false;
 					break;
 				}
 			}
@@ -399,18 +403,20 @@ bool game::can_right(vector<vector<int> > &board){
 
 void game::right(vector<vector<int> > &board){
 	add = 0;
-	for(int j = 2; j >= 0; j--){
-		for(int i = 0; i < 4; i++){
+	for(int i = 0; i < 4; i++){
+		bool merge_flag = false;
+		for(int j = 2; j >= 0; j--){
 			int x = -1;
 			if(board[i][j] == 0)continue;
-			bool merge_flag = false;
 			for(int k = j+1; k < 4; k++){
 				if(board[i][k] == 0)x = k;
 				else if(board[i][j] == board[i][k]){
 					x = k;
-					merge_flag = true;
+					if(!merge_flag)merge_flag = true;
+					else merge_flag = false;
 					break;
 				} else {
+					merge_flag = false;
 					break;
 				}
 			}
