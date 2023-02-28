@@ -1,12 +1,14 @@
 # 2048game
 2048game on Terminal
 
-## Play mode:
-1. N - Normal Play
-2. A - Auto Play (You can watch cpu's play.)
-3. C - Collect Data (Repeat Auto Play and collect score data.)
+2048ゲームの解法アルゴリズムを研究することもできます. You can research solver algorithms for 2048 game.
 
-## How to run:
+## プレイモード:
+1. N - ノーマルプレイ
+2. A - オートプレイ (コンピュータがプレイ)
+3. C - データ収集 (オートプレイを繰り返してスコアデータを収集)
+
+## 実行方法:
 1. `cd src/`
 2. `make`
 3. `./2048`
