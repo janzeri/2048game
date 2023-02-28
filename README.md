@@ -4,7 +4,7 @@
 2048ゲームの解法アルゴリズムを研究することもできます.
 
 <div align="center">
-<img src="/img/menu.png" width="50%">
+<img src="/img/menu.png" width="60%">
 </div>
 
 ## プレイモード:
@@ -17,7 +17,7 @@
 
 (現在の平均スコア 14000 前後)
 <div align="center">
-<img src="/img/data.png" width="50%">
+<img src="/img/data.png" width="60%">
 </div>
 
 20000点を超えると2048タイルができていることを意味します.
