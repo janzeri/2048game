@@ -11,8 +11,8 @@
 
 #include "solver.hpp"
 
-#define RATIO 6 //2の生成率
-#define NUM_OF_DATA 30
+#define RATIO 7 //2の生成率
+#define NUM_OF_DATA 50
 
 using namespace std;
 

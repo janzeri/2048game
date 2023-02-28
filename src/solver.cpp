@@ -15,8 +15,9 @@ int max_score = 0, sum = 0;
 
 void next_board(vector<vector<int> > current, int g);
 int tile_count(vector<vector<int> > board);
-int max_tile(vector<vector<int> > board);
+int max_tile(vector<vector<int> > board, int x);
 int right_most(vector<vector<int> > board);
+bool good(vector<vector<int> > board);
 
 string solver(){
     vector<vector<int> > board = game::get_board();
@@ -44,6 +45,7 @@ string solver(){
         else next_board(copy, 1);
     }
     if(pred == "w" && (tile_count(copy) <= 8 || right_most(copy) != 4))direction = "s";
+    if(pred == "a")direction = "d";
     return direction;
 }
 
@@ -59,48 +61,53 @@ void next_board(vector<vector<int> > current, int g){
     for(int i = 0; i < 4; i++){
         forward[i] = current;
     }
-    int save = g;
     if(game::can_right(current)){
-        if(save == 1){
+        if(g == 1){
             dir = "d";
         }
         if(tile_count(forward[0]) < 8)game::generate_num(forward[0]);
         game::right(forward[0]);
         int tmp = game::get_add();
+        if(g == 1)tmp += 128;
+        if(max_tile(forward[0], 3) == forward[0][3][3])tmp += 128;
         sum += tmp;
-        next_board(forward[0], save+1);
+        next_board(forward[0], g+1);
         sum -= tmp;
     }
     if(game::can_down(current)){
-        if(save == 1){
+        if(g == 1){
             dir = "s";
         }
         if(tile_count(forward[1]) < 8)game::generate_num(forward[1]);
         game::down(forward[1]);
         int tmp = game::get_add();
+        if(g == 1)tmp += 128;
+        if(max_tile(forward[1], 3) == forward[1][3][3])tmp += 128;
         sum += tmp;
-        next_board(forward[1], save+1);
+        next_board(forward[1], g+1);
         sum -= tmp;
     }
     if(game::can_up(current)){
-        if(save == 1){
+        if(g == 1){
             dir = "w";
         }
         if(tile_count(forward[2]) < 8)game::generate_num(forward[2]);
         game::up(forward[2]);
         int tmp = game::get_add();
+        if(g == 1)tmp += 128;
+        if(max_tile(forward[2], 3) == forward[2][3][3])tmp += 128;
         sum += tmp;
-        next_board(forward[2], save+1);
+        next_board(forward[2], g+1);
         sum -= tmp;
     }
     /*if(game::can_left(current)){
-        if(save == 1){
+        if(g == 1){
             dir = "a";
         }
         game::left(forward[3]);
         int tmp = game::get_add();
         sum += tmp;
-        next_board(forward[3], save+1);
+        next_board(forward[3], g+1);
         sum -= tmp;
     }*/
 }
@@ -115,10 +122,10 @@ int tile_count(vector<vector<int> > board){
     return cnt;
 }
 
-int max_tile(vector<vector<int> > board){
+int max_tile(vector<vector<int> > board, int x){
     int ans = 0;
     for(int i = 0; i < 4; i++){
-        for(int j = 0; j < 4; j++){
+        for(int j = 0; j <= x; j++){
             if(board[i][j] >= ans)ans = board[i][j];
         }
     }
