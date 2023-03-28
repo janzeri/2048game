@@ -1,6 +1,7 @@
 .DS_Store
 /**/.DS_Store
 /src/2048
+.vscode
 # Prerequisites
 *.d
 
