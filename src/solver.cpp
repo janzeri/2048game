@@ -1,10 +1,6 @@
 #include<iostream>
 #include<string>
-#include<cstring>
-#include<cstdio>
-#include<cstdlib>
-#include<ctime>
-#include <vector>
+#include<vector>
 
 #include "game.hpp"
 

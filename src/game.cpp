@@ -1,15 +1,14 @@
 #include<iostream>
 #include<string>
 #include<cstring>
-#include<cstdio>
-#include<cstdlib>
 #include<ctime>
 #include<iomanip>
 #include<unistd.h>
-#include <stack>
-#include <vector>
+#include<stack>
+#include<vector>
 
 #include "solver.hpp"
+#include "myconio.h"
 
 #define RATIO 7 //2の生成率
 #define NUM_OF_DATA 50
@@ -23,7 +22,7 @@ int score;
 
 class game{
 	stack<int> score_stack;
-
+	
 	public:
     void menu();
 	static vector<vector<int> > get_board();
@@ -42,7 +41,6 @@ class game{
 	string mode;
 	void draw_board();
 	void out_num(int y);
-	void generate_num();
 	bool board_notfull();
 
 	void normal_play();
@@ -142,12 +140,12 @@ bool game::board_notfull(){
 void game::normal_play(){
 	while(board_notfull()){
 		cout << endl << endl << "\t\t\t\t    -----Normal play-----" << endl << endl;
-		cout << "\t\tscore : " << score << endl;
+		cout << "\t\tSCORE : " << score << endl;
 		generate_num(board);
 		draw_board();
 		if(!can_up(board) && !can_down(board) && !can_left(board) && !can_right(board))break;
-		cout << endl << "\t\t\tW\t   ^" << endl << endl;
-		cout << "\t\t     A  S  D\t<  v  >\t\tH - Hint\tQ - Quit" << endl << endl << "\t\t\t\t\tInput : ";
+		cout << endl << "\t\t\tW\t   ↑" << endl << endl;
+		cout << "\t\t     A  S  D\t←  ↓  →\t\tH - Hint\tQ - Quit" << endl << endl;
 		move();
 		score += add;
 	}
@@ -201,46 +199,51 @@ void game::collect_data(){
 }
 
 void game::move(){
-	string d;
-	cin >> d;
-	if(strcasecmp(d.c_str(), "W") == 0){
+	int c = mygetch();
+	if(c == 27){ //方向キーの入力に対応
+		if(mygetch() == 91){
+			c = mygetch();
+			if(c == 65)c = 87;
+			else if(c == 66)c = 83;
+			else if(c == 67)c = 68;
+			else c = 65;
+		}
+	}
+	//cout << char(c) << endl;
+
+	if(c == 87 || c == 119){
 		if(can_up(board)){
 			up(board);
 		} else {
-			cout << "\t\t\t\t\tcannot move up!" << endl << "\t\t\t\t\tInput : ";
 			move();
 		}
-	} else if(strcasecmp(d.c_str(), "A") == 0){
+	} else if(c == 65 || c == 97){
 		if(can_left(board)){
 			left(board);
 		} else {
-			cout << "\t\t\t\t\tcannot move left!" << endl << "\t\t\t\t\tInput : ";
 			move();
 		}
-	} else if(strcasecmp(d.c_str(), "S") == 0){
+	} else if(c == 83 || c == 115){
 		if(can_down(board)){
 			down(board);
 		} else {
-			cout << "\t\t\t\t\tcannot move down!" << endl << "\t\t\t\t\tInput : ";
 			move();
 		}
-	} else if(strcasecmp(d.c_str(), "D") == 0){
+	} else if(c == 68 || c == 100){
 		if(can_right(board)){
 			right(board);
 		} else {
-			cout << "\t\t\t\t\tcannot move right!" << endl << "\t\t\t\t\tInput : ";
 			move();
 		}
-	} else if(strcasecmp(d.c_str(), "H") == 0){
+	} else if(c == 72 || c == 104){
 		cout << "\t\t\t\t\tHint : " << solver() << endl << "\t\t\t\t\tInput : ";
 		move();
-	} else if(strcasecmp(d.c_str(), "Q") == 0){
+	} else if(c == 81 || c == 113){
 		cout << endl << "\t\t\t\t----------------------------" << endl;
 		cout << "\t\t\t\t----------- Quit -----------" << endl;
 		cout << "\t\t\t\t----------------------------" << endl;
 		exit(1);
 	} else {
-		cout << "\t\t\t\t\tInvalid input!" << endl << "\t\t\t\t\tInput : ";
 		move();
 	}
 }
