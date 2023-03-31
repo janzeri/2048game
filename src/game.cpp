@@ -236,7 +236,7 @@ void game::move(){
 			move();
 		}
 	} else if(c == 72 || c == 104){
-		cout << "\t\t\t\t\tHint : " << solver() << endl << "\t\t\t\t\tInput : ";
+		cout << "\t\t\t\t\tHint : " << solver();
 		move();
 	} else if(c == 81 || c == 113){
 		cout << endl << "\t\t\t\t----------------------------" << endl;
